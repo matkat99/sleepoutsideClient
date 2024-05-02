@@ -17,7 +17,21 @@ export function setLocalStorage(key, data) {
 export function setClick(selector, callback) {
   qs(selector).addEventListener("touchend", (event) => {
     event.preventDefault();
-    callback();
+    callback(event);
   });
   qs(selector).addEventListener("click", callback);
+}
+
+export function openUserMenu(selector) {
+  setClick(selector, (e) => {
+    e.stopPropagation();
+    const el = document.querySelector(".user__menu");
+    el.classList.toggle("open");
+  });
+  setClick("body", () => {
+    const openMenus = document.querySelectorAll(".open");
+    openMenus.forEach((el) => {
+      el.classList.remove("open");
+    });
+  });
 }

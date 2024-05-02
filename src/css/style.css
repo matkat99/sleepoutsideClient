@@ -12,6 +12,7 @@
   --font-base: 18px;
   --small-font: 0.8em;
   --large-font: 1.2em;
+  --icon-size: 40px;
 }
 * {
   box-sizing: border-box;
@@ -25,10 +26,73 @@ body {
 img {
   max-width: 100%;
 }
+
+a:link,
+a:visited {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 header {
   display: flex;
   justify-content: space-between;
   padding: 0 10px;
+}
+
+.menu-right {
+  /* padding-top: 0.5em; */
+  display: flex;
+  align-items: center;
+}
+.user {
+  position: relative;
+}
+
+.user a:link,
+.user a:visited {
+  color: var(--dark-grey);
+  text-decoration: none;
+}
+.user a:hover {
+  text-decoration: underline;
+}
+.user__button {
+  background-color: transparent;
+  border: 0;
+  color: var(--dark-grey);
+  width: var(--icon-size);
+  height: var(--icon-size);
+  overflow: hidden;
+  padding: 0;
+}
+.user__button:hover {
+  /* color: var(--light-grey); */
+  opacity: 0.7;
+}
+.user__menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  top: 120%;
+  right: 0;
+  z-index: 10;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 0 1em;
+  line-height: 2;
+
+  height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+.user__menu.open {
+  height: auto;
+  padding: 1em;
+  border: 1px solid var(--primary-color);
 }
 .logo {
   line-height: 60px;
@@ -98,13 +162,13 @@ button {
 
 /* Cart icon styles */
 .cart {
-  padding-top: 1em;
+  margin-left: 1em;
   position: relative;
   text-align: center;
 }
 
 .cart svg {
-  width: 25px;
+  width: calc(var(--icon-size) - 2px);
 }
 .cart:hover svg {
   fill: gray;
