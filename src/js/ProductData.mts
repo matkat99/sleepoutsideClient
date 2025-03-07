@@ -1,4 +1,4 @@
-import type {Product} from "./types.mjs"
+import type {Product} from "./types.mts"
 function convertToJson(res:Response) {
   if (res.ok) {
     return res.json();

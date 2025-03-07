@@ -1,6 +1,6 @@
-import type {Product} from "./types.mjs"
-import { setLocalStorage } from "./utils.mjs";
-import { findProductById } from "./ProductData.mjs";
+import type {Product} from "./types.mts"
+import { setLocalStorage } from "./utils.mts";
+import { findProductById } from "./productData.mts";
 
 function addProductToCart(product:Product) {
   setLocalStorage("so-cart", product);
@@ -8,8 +8,10 @@ function addProductToCart(product:Product) {
 // add to cart button event handler
 async function addToCartHandler(e:Event) {
   const target = e.target as HTMLButtonElement
-  const product = await findProductById(target.dataset.id);
-  addProductToCart(product);
+  if(target.dataset.id) {
+    const product = await findProductById(target.dataset.id);
+    addProductToCart(product);
+  }
 }
 
 // add listener to Add to Cart button
