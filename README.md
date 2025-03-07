@@ -1,4 +1,4 @@
-# sleepoutside
+# Sleepoutside - Fronend starter code
 
 ## Description
 
@@ -6,7 +6,7 @@ Use this as a starting point to complete the WDD 360 team activity: the SleepOut
 
 ## Prerequisites
 
-- You must have Node installed. visit https://byui-cit.github.io/advcss/lesson01/l01-software.html and skip to the Node section for instructions
+- You must have Node installed. Visit [https://byui-cit.github.io/learning-modules/modules/general/node-installation/](https://byui-cit.github.io/learning-modules/modules/general/node-installation/).
 
 ## Setup
 
