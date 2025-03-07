@@ -6,13 +6,17 @@ let product:Product;
 
 export default async function productDetails(productId:string, selector:string) {
   // get the details for the current product. findProductById will return a promise! use await or .then() to process it
-  product = await findProductById(productId);
-  // once we have the product details we can render out the HTML
-  const el = document.querySelector(selector);
-  if(el){
-  el.insertAdjacentHTML("afterbegin", productDetailsTemplate(product));
-  // once the HTML is rendered we can add a listener to Add to Cart button
-  document.getElementById("addToCart")?.addEventListener("click", addToCart);
+  try {
+    product = await findProductById(productId);
+    // once we have the product details we can render out the HTML
+    const el = document.querySelector(selector);
+    if(el){
+    el.insertAdjacentHTML("afterbegin", productDetailsTemplate(product));
+    // once the HTML is rendered we can add a listener to Add to Cart button
+    document.getElementById("addToCart")?.addEventListener("click", addToCart);
+    }
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -25,7 +29,7 @@ function productDetailsTemplate(product:Product) {
   <h2 class="divider">${product.NameWithoutBrand}</h2>
   <img
     class="divider"
-    src="${product.Image}"
+    src="${product.Images.PrimaryLarge}"
     alt="${product.Name}"
   />
   <p class="product-card__price">$${product.FinalPrice}</p>
