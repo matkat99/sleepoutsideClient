@@ -1,3 +1,14 @@
+export interface Color {
+  colorCode: string;
+  colorName: string;
+}
+
+export interface Brand {
+  id: string;
+  logoSrc: string;
+  name: string;
+}
+
 export interface Product {
   _id: string;
   Id: string;
