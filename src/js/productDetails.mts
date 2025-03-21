@@ -21,19 +21,19 @@ function addToCart() {
 }
 
 function productDetailsTemplate(product:Product) {
-  return `<h3>${product.Brand.Name}</h3>
-  <h2 class="divider">${product.NameWithoutBrand}</h2>
+  return `<h3>${product.brand.name}</h3>
+  <h2 class="divider">${product.nameWithoutBrand}</h2>
   <img
     class="divider"
-    src="${product.Image}"
-    alt="${product.Name}"
+    src="${product.image}"
+    alt="${product.name}"
   />
-  <p class="product-card__price">$${product.FinalPrice}</p>
-  <p class="product__color">${product.Colors[0].ColorName}</p>
+  <p class="product-card__price">$${product.finalPrice}</p>
+  <p class="product__color">${product.colors[0].colorName}</p>
   <p class="product__description">
-  ${product.DescriptionHtmlSimple}
+  ${product.descriptionHtmlSimple}
   </p>
   <div class="product-detail__add">
-    <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
+    <button id="addToCart" data-id="${product.id}">Add to Cart</button>
   </div>`;
 }
