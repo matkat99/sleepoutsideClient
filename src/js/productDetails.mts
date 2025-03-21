@@ -1,5 +1,5 @@
 import { findProductById } from "./productData.mts";
-import { setLocalStorage } from "./utils.mts";
+import { getLocalStorage, setLocalStorage } from "./utils.mts";
 import type { Product } from "./types.mts";
 
 let product:Product;
@@ -21,7 +21,9 @@ export default async function productDetails(productId:string, selector:string) 
 }
 
 function addToCart() {
-  setLocalStorage("so-cart", product);
+  const items = getLocalStorage("so-cart") || [];
+  items.push(product);
+  setLocalStorage("so-cart",items);
 }
 
 function productDetailsTemplate(product:Product) {
