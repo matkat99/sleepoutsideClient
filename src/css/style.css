@@ -158,6 +158,18 @@ button {
 .divider {
   border-bottom: 2px solid var(--primary-color);
 }
+
+.link-style-button {
+  background-color: transparent;
+  color: var(--dark-grey);
+  line-height: inherit;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+}
+.link-style-button:hover {
+  text-decoration: underline;
+}
 /* End utility classes */
 
 /* Cart icon styles */
