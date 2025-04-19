@@ -1,9 +1,7 @@
-import { openUserMenu } from "./utils.mjs";
 import { mount } from "svelte";
 import UserMenu from './components/UserMenu.svelte';
-import { checkAuth } from "./auth.svelte";
+import Profile from './components/Profile.svelte';
 
-checkAuth();
 
 const menuEl = document.querySelector('.user-menu-container');
 if(menuEl) {
@@ -12,4 +10,10 @@ if(menuEl) {
     });
 }
 
-// openUserMenu(".user__button");
+const contentEl = document.querySelector('.content');
+
+if(contentEl) {
+    mount(Profile, {
+        target: contentEl
+    });
+}

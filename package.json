@@ -15,11 +15,13 @@
   "author": "Shane Thompson",
   "license": "ISC",
   "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@types/node": "^22.13.9",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
     "prettier": "^3.5.3",
+    "svelte": "^5.27.2",
     "typescript": "^5.8.2",
     "vite": "^6.2.1",
     "vitest": "^3.0.8"
