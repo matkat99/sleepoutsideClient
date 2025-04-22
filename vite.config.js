@@ -14,6 +14,7 @@ export default defineConfig({
         checkout: resolve("src/checkout/index.html"),
         product1: resolve("src/product_pages/index.html"),
         profile: resolve("src/profile/index.html"),
+        product_list: resolve("src/product-list/index.html"),
       },
     },
   },
