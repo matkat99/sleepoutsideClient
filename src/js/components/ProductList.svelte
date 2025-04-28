@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { getProducts } from "../productData.mts";
+  import { getProducts } from "../productService.mts";
   import ProductSummary from "./ProductSummary.svelte";
   import type { Product } from "../types.mts";
 

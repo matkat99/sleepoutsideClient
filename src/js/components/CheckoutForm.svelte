@@ -1,0 +1,211 @@
+<script lang="ts">
+  import { getLocalStorage, formDataToJSON } from "../utils.mjs";
+  import { submitOrder } from "../ordersService.mjs";
+  import { onMount } from "svelte";
+  import type { Order } from "../types.mts";
+  // props
+  let { key = "" } = $props();
+
+  // state vars
+  let list = $state([]);
+  let itemTotal = $state(0);
+  let shipping = $state(0);
+  let tax = $state(0);
+  let orderTotal = $state(0);
+
+  // initial setup
+  const init = function () {
+    list = getLocalStorage(key);
+    calculateItemSummary();
+  };
+  // calculate order subtotal from the cart items
+  const calculateItemSummary = function () {
+    // calculate the total of all the items in the cart
+    const amounts = list.map((item) => item.finalPrice);
+    itemTotal = amounts.reduce((sum, item) => sum + item);
+  };
+  // calculate the shipping, tax, and orderTotal
+  const calculateOrdertotal = function () {
+    shipping = 10.0 + (list.length - 1) * 2;
+    tax = (itemTotal * 0.06).toFixed(2);
+    orderTotal = (
+      parseFloat(itemTotal) +
+      parseFloat(shipping) +
+      parseFloat(tax)
+    ).toFixed(2);
+  };
+  // transform the current cart contents to a simpler format keeping just the things we need to send to checkout
+  const packageItems = function (items) {
+    const simplifiedItems = items.map((item) => {
+      console.log(item);
+      return {
+        productId: item.id,
+        finalPrice: item.finalPrice,
+        price: item.listPrice,
+        productName: item.name,
+        quantity: 1,
+        productImageSrc: item.images.primaryMedium,
+        productUrl: item.url,
+        productCategory: item.category,
+        productColor: item.color,
+        productSize: item.size
+      };
+    });
+    return simplifiedItems;
+  };
+  const handleSubmit = async function (e) {
+    e.preventDefault();
+    // convert the form into an object
+    const json = formDataToJSON(this);
+    // build the order,
+    const order: Order = {
+      name: json.name,
+      shippingAddress: {
+        street: json.street,
+        city: json.city,
+        state: json.state,
+        zipCode: json.zip,
+        country: "US"
+      },
+
+      createAt: new Date(),
+      modifiedAt: new Date(),
+      totalAmount: orderTotal,
+      status: "pending",
+      paymentMethod: "credit card",
+      tax,
+      shipping,
+      items: packageItems(list)
+    };
+
+    console.log(order);
+    try {
+      const res = await submitOrder(order);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  // initial setup
+  onMount(init);
+</script>
+
+<form name="checkout" onsubmit={handleSubmit}>
+  <fieldset>
+    <legend>Shipping</legend>
+    <div class="checkout__name">
+      <label for="name">Name</label>
+      <input id="name" name="name" required />
+    </div>
+    <div class="checkout__address">
+      <label for="street">Street</label>
+      <input id="street" name="street" required />
+      <label for="city">City</label>
+      <input id="city" name="city" required />
+      <label for="state">State</label>
+      <input id="state" name="state" required />
+      <label for="zip">Zip</label>
+      <input id="zip" name="zip" required onblur={calculateOrdertotal} />
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Payment</legend>
+    <label for="cardNumber">Card number</label>
+    <input
+      id="cardNumber"
+      name="cardNumber"
+      required
+      placeholder="No spaces or dashes!"
+      maxlength="16"
+      minlength="16"
+    />
+    <label for="expiration">Expiration</label>
+    <input id="expiration" name="expiration" required placeholder="mm/yy" />
+    <label for="code">Security Code</label>
+    <input
+      id="code"
+      name="code"
+      required
+      placeholder="xxx"
+      maxlength="3"
+      minlength="3"
+    />
+  </fieldset>
+  <fieldset class="checkout-summary">
+    <legend>Order Summary</legend>
+    <ul>
+      <li>
+        <label for="cartTotal">Item Subtotal({list.length})</label>
+        <input
+          id="cartTotal"
+          name="cartTotal"
+          disabled
+          value={"$" + itemTotal}
+        />
+      </li>
+      <li>
+        <label for="shipping">Shipping Estimate</label>
+        <input
+          id="shipping"
+          name="shipping"
+          disabled
+          value={shipping
+            ? new Intl.NumberFormat("lookup", {
+                minimumFractionDigits: 2,
+                style: "currency",
+                currency: "USD"
+              }).format(shipping)
+            : ""}
+        />
+      </li>
+      <li>
+        <label for="tax">Tax</label>
+        <input id="tax" name="tax" disabled value={tax ? "$" + tax : ""} />
+      </li>
+      <li>
+        <label for="totalAmount"><b>Order Total</b></label>
+        <input
+          id="totalAmount"
+          name="totalAmount"
+          disabled
+          value={orderTotal ? "$" + orderTotal : ""}
+        />
+      </li>
+    </ul>
+
+    <button id="checkoutSubmit" type="submit">Checkout</button>
+  </fieldset>
+</form>
+
+<style>
+  form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  * + fieldset {
+    margin-top: 1em;
+  }
+  label {
+    display: block;
+  }
+  input {
+    width: 100%;
+    font-size: 1.2em;
+  }
+
+  .checkout-summary > ul {
+    padding-left: 0;
+    list-style-type: none;
+  }
+  .checkout-summary li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .checkout-summary input {
+    width: fit-content;
+    border: 0;
+    text-align: right;
+    background-color: transparent;
+  }
+</style>

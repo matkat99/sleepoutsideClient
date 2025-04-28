@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mts";
+import { getLocalStorage, setLocalStorage, getJSONData } from "./utils.mts";
 const baseURL = import.meta.env.VITE_SERVER_URL;
 
 interface UserStore {
@@ -13,16 +13,22 @@ interface UserStore {
 export const userStore = $state( {isLoggedIn: false, user: {}, token: ""}) as UserStore;
 
 export async function login(email:string, password:string) {
-  const res = await fetch(`${baseURL}users/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  })
-  const data = await res.json();
-  if(res.ok) {
-    return data
-  } else {
-    throw new Error(data.error.message);
+  // const res = await fetch(`${baseURL}users/login`, {
+  //   method: "POST",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify({ email, password }),
+  // })
+  const {error, data} = await getJSONData("users/login", "POST", new Headers({ "Content-Type": "application/json" }), { email, password })
+  console.log(data)
+  if (data) {
+    setLocalStorage('so-user', data);
+    userStore.user = data.user;
+    userStore.token = data.token;
+    userStore.isLoggedIn = true;
+  }
+  else if (error) {
+    console.log(error)
+    throw new Error(error);
   }
   
 }

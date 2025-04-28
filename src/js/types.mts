@@ -85,9 +85,10 @@ export interface Address {
   country: string;
 };
 
-  export interface Order {
+export interface Order {
     _id: string;
     userId: string;
+    name: string;
     totalAmount: number;
     status: "pending" | "processing" | "shipped" | "delivered";
     paymentMethod: string;

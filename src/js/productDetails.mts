@@ -1,4 +1,4 @@
-import { findProductById } from "./productData.mts";
+import { findProductById } from "./productService.mts";
 import { getLocalStorage, setLocalStorage } from "./utils.mts";
 import type { Product } from "./types.mts";
 
