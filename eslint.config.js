@@ -1,14 +1,23 @@
-import pluginJs from '@eslint/js';
+import js from "@eslint/js";
+import globals from "globals";
+import { defineConfig } from "eslint/config";
 
-export default [
-    pluginJs.configs.recommended,
-
-   {
-       rules: {
-           'no-unused-vars': 'warn',
-           'no-undef': 'warn',
-           'quotes': ['error', 'double', { 'allowTemplateLiterals': true }],
-           'no-console': 'warn',
-       }
-   }
-];
+export default defineConfig([
+  {
+    files: ["**/*.{js,mjs,cjs}"],
+    plugins: { js },
+    extends: ["js/recommended"],
+  },
+  {
+    files: ["**/*.{js,mjs,cjs}"],
+    languageOptions: { globals: globals.browser },
+  },
+  {
+    rules: {
+      "no-unused-vars": "warn",
+      "no-undef": "warn",
+      quotes: ["error", "double", { allowTemplateLiterals: true }],
+      "no-console": "warn",
+    },
+  },
+]);
