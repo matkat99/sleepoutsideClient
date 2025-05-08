@@ -1,6 +1,8 @@
 import { mount } from "svelte";
 import CheckoutForm from "./components/CheckoutForm.svelte";
+import { checkAuth } from "./auth.svelte";
 
+checkAuth();
 const checkoutEl = document.querySelector(".checkout-container");
 
 if(checkoutEl) {

@@ -3,6 +3,7 @@
   import { submitOrder } from "../ordersService.mjs";
   import { onMount } from "svelte";
   import type { Order } from "../types.mts";
+  import { userStore } from "../auth.svelte";
   // props
   let { key = "" } = $props();
 
@@ -20,7 +21,7 @@
   };
   // calculate order subtotal from the cart items
   const calculateItemSummary = function () {
-    // calculate the total of all the items in the cart
+    // calculate the total of all the items in the cart. If you have implemented quantity make sure to take that into account.
     const amounts = list.map((item) => item.finalPrice);
     itemTotal = amounts.reduce((sum, item) => sum + item);
   };
@@ -60,6 +61,7 @@
     // build the order,
     const order: Order = {
       name: json.name,
+      userId: userStore.user._id,
       shippingAddress: {
         street: json.street,
         city: json.city,
@@ -68,14 +70,14 @@
         country: "US"
       },
 
-      createAt: new Date(),
+      createdAt: new Date(),
       modifiedAt: new Date(),
       totalAmount: orderTotal,
       status: "pending",
       paymentMethod: "credit card",
       tax,
       shipping,
-      items: packageItems(list)
+      orderItems: packageItems(list)
     };
 
     console.log(order);

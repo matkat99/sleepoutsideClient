@@ -10,7 +10,7 @@ export async function submitOrder(order:Order) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer <your token>`
     })
-  return await getJSONData('/orders', 'POST', headers, order);
+  return await getJSONData('orders', 'POST', headers, order);
 }
 export async function getOrdersForUser(userId: string) {
     // to get an order we must be logged in. Check for a token
