@@ -1,5 +1,5 @@
 import { findProductById } from "./productService.mts";
-import { getLocalStorage, setLocalStorage } from "./utils.mts";
+import { alertMessage, getLocalStorage, setLocalStorage } from "./utils.mts";
 import type { Product } from "./types.mts";
 
 let product:Product;
@@ -24,6 +24,8 @@ function addToCart() {
   const items = getLocalStorage("so-cart") || [];
   items.push(product);
   setLocalStorage("so-cart",items);
+  alertMessage(`${product.nameWithoutBrand} added to cart!`);
+
 }
 
 function productDetailsTemplate(product:Product) {

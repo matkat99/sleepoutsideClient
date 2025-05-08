@@ -1,3 +1,6 @@
+import { mount } from "svelte";
+import AlertMessage from './components/AlertMessage.svelte';
+
 // wrapper for querySelector...returns matching element
 export function qs(selector:string, parent = document) {
   return parent.querySelector(selector);
@@ -88,3 +91,26 @@ export async function getJSONData(url:string, method:string = "GET", headers:Hea
   }
     return {error, data};
  }
+
+ export function alertMessage(message:string, scroll = true, duration = 3000) {
+  const alert = mount(AlertMessage, {
+    target: document.querySelector("body"),
+    anchor: document.querySelector("main"),
+    props: {
+      message,
+    },
+  });
+  // make sure they see the alert by scrolling to the top of the window
+  //we may not always want to do this...so default to scroll=true, but allow it to be passed in and overridden.
+  if (scroll) window.scrollTo(0, 0);
+
+  // left this here to show how you could remove the alert automatically after a certain amount of time.
+  // setTimeout(function () {
+  //   alert.$destroy();
+  // }, duration);
+}
+
+export function removeAllAlerts() {
+  const alerts = document.querySelectorAll(".alert");
+  alerts.forEach((alert) => alert.remove());
+}

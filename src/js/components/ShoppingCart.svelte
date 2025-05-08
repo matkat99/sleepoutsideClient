@@ -5,7 +5,7 @@
   let total = calculateListTotal(cartItems);
 
   function calculateListTotal(list) {
-    const amounts = list.map((item) => item.FinalPrice);
+    const amounts = list.map((item) => parseFloat(item.finalPrice));
     return amounts.reduce((sum, item) => sum + item, 0);
   }
 </script>

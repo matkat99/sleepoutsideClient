@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { getLocalStorage, formDataToJSON } from "../utils.mjs";
+  import {
+    getLocalStorage,
+    setLocalStorage,
+    formDataToJSON,
+    removeAllAlerts,
+    alertMessage
+  } from "../utils.mjs";
   import { submitOrder } from "../ordersService.mjs";
   import { onMount } from "svelte";
   import type { Order } from "../types.mts";
@@ -82,10 +88,19 @@
 
     console.log(order);
     try {
-      const res = await submitOrder(order);
-      console.log(res);
+      const { error, data } = await submitOrder(order);
+      console.log(data);
+      if (error) {
+        throw error;
+      }
+      // clear the cart
+      setLocalStorage("so-cart", []);
+      location.assign("/checkout/success.html");
     } catch (err) {
       console.log(err);
+      // get rid of any preexisting alerts.
+      removeAllAlerts();
+      alertMessage(err);
     }
   };
   // initial setup
@@ -101,13 +116,20 @@
     </div>
     <div class="checkout__address">
       <label for="street">Street</label>
-      <input id="street" name="street" required />
+      <input id="street" name="street" minlength="5" required />
       <label for="city">City</label>
       <input id="city" name="city" required />
+      <!-- This should probably be a select with the allowed list of states -->
       <label for="state">State</label>
       <input id="state" name="state" required />
       <label for="zip">Zip</label>
-      <input id="zip" name="zip" required onblur={calculateOrdertotal} />
+      <input
+        id="zip"
+        name="zip"
+        required
+        minlength="5"
+        onblur={calculateOrdertotal}
+      />
     </div>
   </fieldset>
   <fieldset>
