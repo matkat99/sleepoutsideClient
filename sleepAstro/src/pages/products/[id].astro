@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../../layouts/Layout.astro";
+import { type CollectionEntry, getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const products = await getCollection("products");
+
+  return products.map((product) => ({
+    params: { id: product.id },
+    props: product
+  }));
+}
+type Props = CollectionEntry<"products">;
+
+// const { product } = Astro.props;
+const product = Astro.props;
+---
+
+<BaseLayout>
+  <script src="../../js/product.ts"></script>
+  <section class="product-detail">
+    <h3>{product.data.Brand.Name}</h3>
+
+    <h2 class="divider">{product.data.NameWithoutBrand}</h2>
+
+    <img
+      class="divider"
+      src={"../" + product.data.Image}
+      alt={product.data.NameWithoutBrand}
+    />
+
+    <p class="product-card__price">${product.data.FinalPrice}</p>
+
+    <p class="product__color">{product.data.Colors[0].ColorName}</p>
+
+    <p
+      class="product__description"
+      set:html={product.data.DescriptionHtmlSimple}
+    />
+
+    <div class="product-detail__add">
+      <button id="addToCart" data-id={product.data.id}>Add to Cart </button>
+    </div>
+  </section>
+</BaseLayout>
