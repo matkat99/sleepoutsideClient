@@ -201,7 +201,8 @@ button {
 .product-list {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 1em;
   list-style-type: none;
   padding: 0;
 }
@@ -211,11 +212,10 @@ button {
 }
 /* Styles for product lists */
 .product-card {
-  flex: 1 1 45%;
-  margin: 0.25em;
-  padding: 0.5em;
+  flex: 0 1 250px;
+  padding: 1em;
   border: 1px solid var(--light-grey);
-  max-width: 250px;
+  /* width: clamp(200px, 45%, 250px); */
 }
 .product-card h2,
 .product-card h3,
