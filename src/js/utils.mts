@@ -7,7 +7,7 @@ export function qs(selector:string, parent = document) {
 
 // retrieve data from localstorage
 export function getLocalStorage(key:string) {
-  const data = localStorage.getItem(key) || ""
+  const data = localStorage.getItem(key) || "[]"
   return JSON.parse(data);
 }
 // save data to local storage
@@ -27,6 +27,13 @@ export function setClick(selector:string, callback:ClickHandler) {
   });
   element?.addEventListener("click", callback);
 }
+
+export function getParam(param:string) {
+  const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+return urlParams.get(param);
+}
+
 
 export function openUserMenu(selector:string) {
   setClick(selector, (e:Event) => {

@@ -1,4 +1,6 @@
 import type {Product} from "./types.mts"
+
+const baseUrl = import.meta.env.PUBLIC_SERVER_URL;
 function convertToJson(res:Response) {
   if (res.ok) {
     return res.json();
@@ -7,13 +9,17 @@ function convertToJson(res:Response) {
   }
 }
 
-export function getData(category = "tents") {
-  return fetch(`../json/${category}.json`)
-    .then(convertToJson)
-    .then((data) => data);
+export async function getProducts(category = "tents") {
+  const res= await fetch(baseUrl +`products?category=${category}`)
+  const data = await convertToJson(res)
+  
+  return data
+
 }
 
 export async function findProductById(id:string) {
-  const products = await getData();
-  return products.find((item:Product) => item.id === id);
+  const res = await fetch(baseUrl + `products/${id}`);
+  const product = await convertToJson(res);
+  console.log(product);
+  return product;
 }
